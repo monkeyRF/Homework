@@ -1,6 +1,6 @@
 package com.company;
 
-public class Card {
+public class Card implements Comparable<Card> {
     private Rank rank;
     private Suit suit;
     private static int maxRank = 2;
@@ -13,7 +13,7 @@ public class Card {
     Card(String suit) {
         setSuit(suit);
         setRank(maxRank);
-        if (maxRank < 13) {
+        if (maxRank < 14) {
             maxRank++;
         } else {
             maxRank = 2;
@@ -50,6 +50,8 @@ public class Card {
     public int whoIsStronger(Card card) {
         if (this.getSuit().equals(card.getSuit())) {
             return Integer.compare(this.rank.getRankValue(), card.rank.getRankValue());
+        } else if ((this.getRank() == Rank.JOKER) || (card.getRank() == Rank.JOKER)) {
+            return 1;
         } else {
             return -2; // если масть разная
         }
@@ -93,5 +95,12 @@ public class Card {
         Card card = (Card) obj;
         return rank == card.rank &&
                suit == card.suit;
+    }
+
+    @Override
+    public int compareTo(Card card) {
+        if (this.getSuit().equals(card.getSuit())) {
+            return whoIsStronger(card);
+        } return compareCard(card);
     }
 }
